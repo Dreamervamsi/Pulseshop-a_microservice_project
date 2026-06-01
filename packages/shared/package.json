@@ -1,0 +1,17 @@
+{
+    "name": "@pulseshop/shared",
+    "version": "1.0.0",
+    "type": "module",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+      "./error-handler": {
+        "types": "./dist/error-handler.d.ts",
+        "import": "./dist/error-handler.js",
+        "default": "./dist/error-handler.js"
+      }
+    },
+    "scripts": {
+      "build": "tsc"
+    }
+  }
