@@ -1,0 +1,20 @@
+{
+    "name": "pulseshop",
+    "private": true,
+    "workspaces": [
+        "services/*",
+        "packages/*"
+    ],
+    "scripts": {
+        "build": "npm run build -ws --if-present",
+        "dev:auth": "npm run dev -w @pulseshop/auth",
+        "dev:product": "npm run dev -w @pulseshop/product"
+    },
+    "dependencies": {
+        "bcrypt": "^6.0.0",
+        "express": "^5.2.1",
+        "jsonwebtoken": "^9.0.3",
+        "mongoose": "^9.6.3",
+        "zod": "^4.4.3"
+    }
+}
