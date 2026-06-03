@@ -1,6 +1,6 @@
 {
-    "name":"auth-service",
-    "dependencies":{
+    "name": "auth-service",
+    "dependencies": {
         "@pulseshop/shared": "*"
     }
 }
