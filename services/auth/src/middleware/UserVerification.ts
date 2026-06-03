@@ -36,7 +36,7 @@ export const validateUserRegister = [
             });
 
         }
-        next();
+        return next();
     }
 ]
 
