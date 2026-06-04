@@ -5,33 +5,27 @@ import { prisma } from '../models/user.model.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { InternalServerError } from '@pulseshop/shared/error-handler';
+import { checkUserExists, createUser } from '../utils/auth.helper.js';
 
 export const registerUser = async (req: Request, res: Response) => {
     req.body.name = req.body.name.toLowerCase();
     req.body.email = req.body.email.toLowerCase();
     const { name, email, password }: RegisterValidationType = req.body;
-    const isUserExists = await prisma.user.findUnique({
-        where: {
-            email: email
-        }
-    });
-    if (!isUserExists) {
-        throw new BadRequestError('User already exists');
-    }
+    
+    // check user exists
+    await checkUserExists(email);
+
     const hashedPassword = await bcrypt.hash(password, 10);
     try{
-        const user = await prisma.user.create({
-            data: {
-                name: name,
-                email: email,
-                password: hashedPassword
-            }
-        });
+        // create user
+        const {user,token} = await createUser(name,email,hashedPassword);
         return res.status(201).json({
             status: true,
             message: 'User registered successfully',
-            data: user
+            data: user,
+            token:token
         });
+
     }catch(error){
         throw new InternalServerError('Failed to register user');
     }
