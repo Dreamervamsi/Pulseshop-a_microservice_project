@@ -79,9 +79,9 @@ export const validateOtp = async(email:string,next:NextFunction)=>{
     return next();
 }
 
-export const sendOtp = async(to:string,message:string,email:string)=>{
+export const sendOtp = async(to:string,message:string)=>{
     const otp = crypto.randomInt(1000,9999).toString();
     sendEmail(to,message);
-    await redis.set(`otp:${email}`,otp,'EX',300);
-    await redis.set(`otp-cooldown:${email}`,'true','EX',60);
+    await redis.set(`otp:${to}`,otp,'EX',300);
+    await redis.set(`otp-cooldown:${to}`,'true','EX',60);
 }
