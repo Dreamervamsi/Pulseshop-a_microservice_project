@@ -5,7 +5,7 @@ import { prisma } from '../models/user.model.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { InternalServerError } from '@pulseshop/shared/error-handler';
-import { checkUserExists, createUser, validateOtp} from '../utils/auth.helper.js';
+import { checkUserExists, createUser} from '../utils/auth.helper.js';
 import verifyOtp from '../utils/verifyotp.helper.js';
 
 export const registerUser = async (req: Request, res: Response,next:NextFunction) => {
