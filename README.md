@@ -1,5 +1,4 @@
-# Ecommerce Project Using Microservice architecture
-## PulseShop Project
+# An Ecommerce Project(PulseShop) Using Microservice architecture
 
 ### Current Architecture Flow
 
