@@ -11,7 +11,9 @@ flowchart TD
     C --> F{Gmail SMTP}
   ```
 
-What exists today: npm workspaces monorepo with [packages/shared](packages/shared) and [services/auth](services/auth). Root Prisma schema at [prisma/schema.prisma](prisma/schema.prisma) generates the client into services/auth/src/generated/prisma (currently not generated).
+### What i've built upto now: 
+npm workspaces monorepo with [packages/shared](packages/shared) and [services/auth](services/auth). Root Prisma schema at [prisma/schema.prisma](prisma/schema.prisma) generates the client into services/auth/src/generated/prisma
 
-What is planned but missing: product service, Docker/Kafka/K8s.
+### What is planned but missing:
+product service, Docker/Kafka/K8s.
 
