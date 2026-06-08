@@ -21,7 +21,7 @@ export const registerUser = async (req: Request, res: Response,next: NextFunctio
         // create user
         const {user,token} = await createUser(name,email,hashedPassword);
         
-        verifyOtp(email,next);
+        await verifyOtp(email,next);
 
         return res.status(201).json({
             status: true,
@@ -53,6 +53,8 @@ export const loginUser = async (req: Request, res: Response,next:NextFunction) =
     }
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET as string, { expiresIn: '1h' });
 
+    await verifyOtp(email,next);
+    
     return res.status(201).json({
         status: true,
         message: 'User Login successfully',
