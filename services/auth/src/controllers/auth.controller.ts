@@ -8,7 +8,7 @@ import { InternalServerError } from '@pulseshop/shared/error-handler';
 import { checkUserExists, createUser} from '../utils/auth.helper.js';
 import verifyOtp from '../utils/verifyotp.helper.js';
 
-export const registerUser = async (req: Request, res: Response) => {
+export const registerUser = async (req: Request, res: Response,next: NextFunction) => {
     req.body.name = req.body.name.toLowerCase();
     req.body.email = req.body.email.toLowerCase();
     const { name, email, password }: RegisterValidationType = req.body;
@@ -21,7 +21,7 @@ export const registerUser = async (req: Request, res: Response) => {
         // create user
         const {user,token} = await createUser(name,email,hashedPassword);
         
-        verifyOtp(email);
+        verifyOtp(email,next);
 
         return res.status(201).json({
             status: true,
