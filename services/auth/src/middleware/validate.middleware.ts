@@ -54,7 +54,7 @@ export const validateUserLogin = [
     (req:Request,res:Response,next:NextFunction) => {
         const errors = validationResult(req);
         if(!errors.isEmpty()){
-            return res.status(200).json({
+            return res.status(400).json({
                 status: false,
                 message: errors.array()[0].msg,
                 data: null

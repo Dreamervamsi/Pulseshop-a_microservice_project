@@ -2,10 +2,11 @@ import { AppError } from '@pulseshop/shared/error-handler';
 import { sendOtp, trackOtpAttempts, trackOtpRequest, validateOtp } from './auth.helper.js';
 import { Response,Request } from 'express';
 
+
 export default async function verifyOtp(req:Request,res:Response){
     // OTP logic
     try{
-        const {email} = req.body;
+        const {email,otp} = req.body;
         
         if (!email) {
             return res.status(400).json({ status: 'failed', message: 'Email is required' });
@@ -13,7 +14,8 @@ export default async function verifyOtp(req:Request,res:Response){
 
         await validateOtp(email);
         await trackOtpRequest(email);
-        const otp = await sendOtp(email,"Verify OTP");
+        await sendOtp(email,"Verify OTP");
+        
         await trackOtpAttempts(email,parseInt(otp));
 
         return res.status(200).json({
