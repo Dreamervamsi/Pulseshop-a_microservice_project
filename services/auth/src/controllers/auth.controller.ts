@@ -1,14 +1,13 @@
 import { BadRequestError, NotFoundError } from '@pulseshop/shared/error-handler';
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { RegisterValidationType } from '@pulseshop/shared/types';
 import { prisma } from '../models/user.model.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { InternalServerError } from '@pulseshop/shared/error-handler';
 import { checkUserExists, createUser} from '../utils/auth.helper.js';
 import verifyOtp from '../utils/verifyotp.helper.js';
 
-export const registerUser = async (req: Request, res: Response,next: NextFunction) => {
+export const registerUser = async (req: Request, res: Response) => {
     req.body.name = req.body.name.toLowerCase();
     req.body.email = req.body.email.toLowerCase();
     const { name, email, password }: RegisterValidationType = req.body;
@@ -22,7 +21,7 @@ export const registerUser = async (req: Request, res: Response,next: NextFunctio
         // create user
         const {user,token} = await createUser(name,email,hashedPassword);
         
-        await verifyOtp(email,next);
+        await verifyOtp(req,res);
 
         return res.status(201).json({
             status: true,
@@ -32,11 +31,14 @@ export const registerUser = async (req: Request, res: Response,next: NextFunctio
         });
 
     }catch(error){
-        throw new InternalServerError('Failed to register user');
+        return res.status(500).json({
+            status:'failed',
+            message:'InternalServerError'
+        });
     }
 }
 
-export const loginUser = async (req: Request, res: Response,next:NextFunction) => {
+export const loginUser = async (req: Request, res: Response) => {
     req.body.email = req.body.email.toLowerCase();
     const { email, password } = req.body;
     const user = await prisma.user.findUnique({
@@ -54,7 +56,7 @@ export const loginUser = async (req: Request, res: Response,next:NextFunction) =
     }
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET as string, { expiresIn: '1h' });
 
-    await verifyOtp(email,next);
+    await verifyOtp(req,res);
 
     return res.status(201).json({
         status: true,
