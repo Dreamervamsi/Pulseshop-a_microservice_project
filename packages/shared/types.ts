@@ -4,7 +4,7 @@ export type RegisterValidationType = {
     email: string,
     password: string
 }
-export type checkEmailType = {
+export type checkOTPType = {
     email : string,
     otp : Number
 }

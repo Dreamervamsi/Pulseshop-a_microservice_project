@@ -8,7 +8,7 @@ import { InternalServerError } from '@pulseshop/shared/error-handler';
 import { checkUserExists, createUser} from '../utils/auth.helper.js';
 import verifyOtp from '../utils/verifyotp.helper.js';
 
-export const registerUser = async (req: Request, res: Response,next:NextFunction) => {
+export const registerUser = async (req: Request, res: Response) => {
     req.body.name = req.body.name.toLowerCase();
     req.body.email = req.body.email.toLowerCase();
     const { name, email, password }: RegisterValidationType = req.body;
@@ -21,9 +21,8 @@ export const registerUser = async (req: Request, res: Response,next:NextFunction
         // create user
         const {user,token} = await createUser(name,email,hashedPassword);
         
-        // otp verification    
-        verifyOtp(req,res,next);
-        
+        verifyOtp(email);
+
         return res.status(201).json({
             status: true,
             message: 'User registered successfully',
@@ -53,9 +52,6 @@ export const loginUser = async (req: Request, res: Response,next:NextFunction) =
         throw new BadRequestError('Invalid password');
     }
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET as string, { expiresIn: '1h' });
-
-    // otp verification
-    verifyOtp(req,res,next);
 
     return res.status(201).json({
         status: true,

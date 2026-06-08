@@ -1,17 +1,11 @@
-import { NextFunction,Request,Response } from "express";
+import { NextFunction } from "express";
 import { sendOtp, trackOtpAttempts, trackOtpRequest, validateOtp } from './auth.helper.js';
-import {checkEmailType} from '@pulseshop/shared/types';
 
-export default async function verifyOtp(req:Request,res:Response,next:NextFunction){
-    const { email,otp } :checkEmailType  = req.body;
-    
+export default async function verifyOtp(email:string,next:NextFunction){
     // OTP logic
-    await validateOtp(email,next);
-    await trackOtpRequest(email,next);
-    await sendOtp(email,"Verify OTP");
-    await trackOtpAttempts(email,otp,next);
-    
-    res.status(200).json({
-        'message':"OTP sent to email, Please verify it"
-    });
+        await validateOtp(email,next);
+        await trackOtpRequest(email,next);
+        const otp = await sendOtp(email,"Verify OTP");
+        await trackOtpAttempts(email,parseInt(otp),next);
+
 }
