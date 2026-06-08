@@ -12,7 +12,7 @@ export async function checkUserExists(email:string){
             email: email
         }
     });
-    if (!isUserExists) {
+    if (isUserExists) {
         throw new BadRequestError('User already exists');
     }
 }
@@ -61,7 +61,6 @@ export const trackOtpAttempts = async(email:string,otp:Number,next:NextFunction)
     await redis.del(`otp-attempts:${email}`);
     await redis.del(`otp-cooldown:${email}`);
     return next();
-    
 }
 
 export const validateOtp = async(email:string,next:NextFunction)=>{

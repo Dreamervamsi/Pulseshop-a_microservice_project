@@ -13,11 +13,12 @@ export const registerUser = async (req: Request, res: Response,next: NextFunctio
     req.body.email = req.body.email.toLowerCase();
     const { name, email, password }: RegisterValidationType = req.body;
     
-    // check user exists
-    await checkUserExists(email);
-
-    const hashedPassword = await bcrypt.hash(password, 10);
     try{
+        // check user exists
+        await checkUserExists(email);
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+    
         // create user
         const {user,token} = await createUser(name,email,hashedPassword);
         
@@ -46,15 +47,15 @@ export const loginUser = async (req: Request, res: Response,next:NextFunction) =
     if (!user) {
         throw new NotFoundError('User not found');
     }
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const isPasswordCorrect = await bcrypt.compare(hashedPassword, user?.password || '');
+
+    const isPasswordCorrect = await bcrypt.compare(password, user?.password || '');
     if (!isPasswordCorrect) {
         throw new BadRequestError('Invalid password');
     }
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET as string, { expiresIn: '1h' });
 
     await verifyOtp(email,next);
-    
+
     return res.status(201).json({
         status: true,
         message: 'User Login successfully',
