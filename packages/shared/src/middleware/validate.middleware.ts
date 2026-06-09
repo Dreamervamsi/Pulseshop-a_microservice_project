@@ -20,11 +20,6 @@ export const validateUserRegister = [
         .withMessage('Password must be at least 8 characters long')
         .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
         .withMessage('Password must contain at least one uppercase letter, one lowercase letter, one number and one special character'),
-    body('confirmPassword')
-        .notEmpty()
-        .withMessage('Confirm password is required')
-        .custom((value, { req }) => value === req.body.password)
-        .withMessage('Passwords do not match'),
 
     (req: Request, res: Response, next: NextFunction) => {
         const errors = validationResult(req);

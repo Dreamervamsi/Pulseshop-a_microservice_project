@@ -23,9 +23,13 @@
       "import":"./src/dist/src/asyncHandler.js",
       "default":"./src/dist/src/asyncHandler.js"
     },
-    "./middleware":{
+    "./error-middleware":{
       "import":"./src/dist/src/middleware/error.middleware.js",
       "default":"./src/dist/src/middleware/error.middleware.js"
+    },
+    "./validate-middleware":{
+      "import":"./src/dist/src/middleware/validate.middleware.js",
+      "default":"./src/dist/src/middleware/validate.middleware.js"
     }
   },
   "scripts": {
