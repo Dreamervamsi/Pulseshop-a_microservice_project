@@ -6,17 +6,23 @@ export const sendEmail = async(to:string,otp:string,message:string)=>{
             from: process.env.EMAIL_ID,
             to: to,
             subject: 'Verification from nodemailer',
-            text:message+otp
+            text:message +" "+ otp
         };
-        
-        transporter.sendMail(mailOptions,(error,info)=>{
-            if(error)
-            {
-                return error.message;
+        try{
+            const info = await transporter.sendMail(mailOptions);
+            console.log(info);
+            return {
+                success:'true',
+                data:info.messageId
             }
-            console.log(info.messageId);
-            return info;
-        });
-    
-    
+
+        }catch(error:any)
+        {
+            console.log(error.message);
+            return {
+                success:'failed',
+                message:'Error while sending email.',
+                error:error.message
+            }
+        }
 }

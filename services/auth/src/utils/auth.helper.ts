@@ -79,7 +79,10 @@ export const validateOtp = async(email:string)=>{
 
 export const sendOtp = async(to:string,message:string)=>{
     const otp = crypto.randomInt(1000,9999).toString();
-    await sendEmail(to,otp,message);
+    const res = await sendEmail(to,otp,message);
+
+    console.log(res);
+
     await redis.set(`otp:${to}`,otp,'EX',300);
 
     // cooldown refers to trying another otp rrequest after some time
