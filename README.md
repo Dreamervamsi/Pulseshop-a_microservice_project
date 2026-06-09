@@ -1,6 +1,6 @@
 # An Ecommerce Project(PulseShop) Using Microservice architecture
 
-### Current Architecture Flow
+## Current Architecture Flow
 
 ```mermaid
 flowchart TD
