@@ -1,4 +1,4 @@
-import { BadRequestError, NotFoundError } from '@pulseshop/shared/error-handler';
+import { AppError, BadRequestError, NotFoundError } from '@pulseshop/shared/error-handler';
 import { Request, Response } from 'express';
 import { RegisterValidationType } from '@pulseshop/shared/types';
 import { prisma } from '../models/user.model.js';
@@ -10,18 +10,18 @@ import verifyOtp from '../utils/verifyotp.helper.js';
 export const registerUser = async (req: Request, res: Response) => {
     req.body.name = req.body.name.toLowerCase();
     req.body.email = req.body.email.toLowerCase();
-    const { name, email, password }: RegisterValidationType = req.body;
+    const { name, email, password,otp }: RegisterValidationType = req.body;
     
     try{
         // check user exists
         await checkUserExists(email);
 
         const hashedPassword = await bcrypt.hash(password, 10);
-    
+        console.log(hashedPassword);
         // create user
         const {user,token} = await createUser(name,email,hashedPassword);
         
-        await verifyOtp(req,res);
+        await verifyOtp(email,otp);
 
         return res.status(201).json({
             status: true,
@@ -30,17 +30,26 @@ export const registerUser = async (req: Request, res: Response) => {
             token:token
         });
 
-    }catch(error){
+    }catch(error:any){
+        if(error instanceof AppError)
+        {
+            return res.status(error.statusCode).json({
+                status:'failed',
+                message:error.message,
+                description:error.description
+            });
+        }
         return res.status(500).json({
             status:'failed',
-            message:'InternalServerError'
+            message:'InternalServerError',
+            error:error.message
         });
     }
 }
 
 export const loginUser = async (req: Request, res: Response) => {
     req.body.email = req.body.email.toLowerCase();
-    const { email, password } = req.body;
+    const { email, password,otp } = req.body;
     const user = await prisma.user.findUnique({
         where: {
             email: email
@@ -56,7 +65,7 @@ export const loginUser = async (req: Request, res: Response) => {
     }
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET as string, { expiresIn: '1h' });
 
-    await verifyOtp(req,res);
+    await verifyOtp(email,otp);
 
     return res.status(201).json({
         status: true,

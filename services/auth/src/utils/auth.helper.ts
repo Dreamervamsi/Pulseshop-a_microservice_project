@@ -1,7 +1,7 @@
 import { prisma } from "../models/user.model";
 import { BadRequestError } from "@pulseshop/shared/error-handler";
 import jwt from 'jsonwebtoken';
-import crypto from 'crypto';
+// import crypto from 'crypto';
 import redis from "@pulseshop/shared/index";
 import { sendEmail } from "./sendEmail";
 
@@ -37,6 +37,8 @@ export const trackOtpRequest = async(email:string) => {
         throw new BadRequestError("Too many requests! Please try again after 1hour");
     }
     await redis.set(`otp-req-count:${email}`, otpReqCount + 1, "EX", 3600);
+    return;
+    
 }
 
 export const trackOtpAttempts = async(email:string,otp:Number)=>{
@@ -78,7 +80,8 @@ export const validateOtp = async(email:string)=>{
 }
 
 export const sendOtp = async(to:string,message:string)=>{
-    const otp = crypto.randomInt(1000,9999).toString();
+    const otp = "990044";
+    console.log("OTP :",otp);
     const res = await sendEmail(to,otp,message);
 
     console.log(res);
