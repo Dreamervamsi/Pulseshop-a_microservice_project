@@ -45,7 +45,7 @@ export const trackOtpAttempts = async(email:string,otp:Number)=>{
     const isLocked = await redis.get(`otp-lock:${email}`);
     if(isLocked == 'locked')
     {
-        return new BadRequestError("Multiple failed attempts! Please wait for 30 minutes.");
+        throw new BadRequestError("Multiple failed attempts! Please wait for 30 minutes.");
     }
 
     const otpAttemptCount = parseInt(await redis.get(`otp-attempts:${email}`) || '0');
