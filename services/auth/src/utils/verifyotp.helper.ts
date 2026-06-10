@@ -1,5 +1,5 @@
 import { BadRequestError } from '@pulseshop/shared/error-handler';
-import { sendOtp, trackOtpAttempts, trackOtpRequest, validateOtp } from './auth.helper.js';
+import { trackOtpAttempts, trackOtpRequest, validateOtp } from './auth.helper.js';
 
 
 export default async function verifyOtp(email:string,otp:string){
