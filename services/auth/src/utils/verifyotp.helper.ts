@@ -12,9 +12,6 @@ export default async function verifyOtp(email:string,otp:string){
         await validateOtp(email);
 
         await trackOtpRequest(email);
-
-        await sendOtp(email,"Verify OTP");
-        console.log("Otp sent..");
         
         await trackOtpAttempts(email,parseInt(otp));
 
