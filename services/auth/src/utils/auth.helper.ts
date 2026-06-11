@@ -1,7 +1,7 @@
 import { prisma } from "../models/user.model";
 import { BadRequestError } from "@pulseshop/shared/error-handler";
 import jwt from 'jsonwebtoken';
-// import crypto from 'crypto';
+import crypto from 'crypto';
 import redis from "@pulseshop/shared/index";
 import { sendEmail } from "./sendEmail";
 
@@ -25,7 +25,7 @@ export const createUser = async(name:string,email:string,hashedPassword:string)=
             password: hashedPassword
         }
     });
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET as string, { expiresIn: '1h' });
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET as string, { expiresIn: '1h' });
     return {user,token};
 }
 
@@ -80,7 +80,7 @@ export const validateOtp = async(email:string)=>{
 }
 
 export const sendOtp = async(to:string,message:string)=>{
-    const otp = "990044";
+    const otp = crypto.randomInt(1000,9999).toString();
     console.log("OTP :",otp);
     const res = await sendEmail(to,otp,message);
 

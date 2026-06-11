@@ -3,7 +3,7 @@ import transporter from "../../config/nodemailer.config";
 export const sendEmail = async(to:string,otp:string,message:string)=>{
         console.log("To address",to);
         const mailOptions = {
-            from: process.env.EMAIL_ID || 'o220388@rguktrkv.ac.in',
+            from: process.env.EMAIL_ID || 'kvamsi.nellore@gmail.com',
             to: to,
             subject: 'Verification from nodemailer',
             text:message +" "+ otp

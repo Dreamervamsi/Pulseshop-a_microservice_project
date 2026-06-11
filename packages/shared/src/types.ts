@@ -8,3 +8,7 @@ export type checkOTPType = {
     email : string,
     otp : Number
 }
+
+export interface JWTPayload {
+    userId : string
+}
