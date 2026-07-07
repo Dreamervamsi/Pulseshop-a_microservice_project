@@ -2,7 +2,7 @@
     "name": "pulseshop",
     "private": true,
     "workspaces": [
-        "services/*",
+        "services/auth",
         "packages/*"
     ],
     "scripts": {

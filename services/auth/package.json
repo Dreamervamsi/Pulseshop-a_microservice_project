@@ -1,5 +1,5 @@
 {
-    "name": "auth-service",
+    "name": "@pulseshop/auth-service",
     "scripts": {
         "build": "tsc",
         "dev": "npx tsx watch src/server.ts"
