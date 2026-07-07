@@ -1,4 +1,4 @@
-// User REgistrater Validation Type
+// User Registration Validation Type
 export type RegisterValidationType = {
     name: string,
     email: string,

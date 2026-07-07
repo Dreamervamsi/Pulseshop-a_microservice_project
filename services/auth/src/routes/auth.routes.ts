@@ -3,7 +3,6 @@ import { registerUser, loginUser, verifyOtpRequest } from '../controllers/auth.c
 import { validateUserRegister, validateUserLogin } from '@pulseshop/shared/validate-middleware';
 import {asyncHandler} from '@pulseshop/shared/asyncHandler';
 import { errMiddeware } from '@pulseshop/shared/error-middleware';
-verifyOtpRequest
 
 export const authRouter = Router();
 

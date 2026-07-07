@@ -1,9 +1,10 @@
-import {NextFunction, Request,Response} from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { NotFoundError, UnauthorizedError } from '../error-handler.js';
 import 'dotenv/config';
 import jwt from 'jsonwebtoken';
 import { JWTPayload } from '../types.js';
 import { asyncHandler } from '../asyncHandler.js';
+
 // by default Express 'Request' doesnt have userId, so we set them and use them in jwt verification
 declare global {
   namespace Express {

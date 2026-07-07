@@ -68,6 +68,4 @@ export const verifyOtpRequest = asyncHandler(async (req: Request, res: Response)
             status:'success',
             description:"Otp verified successfully"
     });
-
-    
 });

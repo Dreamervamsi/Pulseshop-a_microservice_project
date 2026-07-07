@@ -8,7 +8,6 @@ export default async function verifyOtp(email:string,otp:string){
         if (!email) {
             throw new BadRequestError("Email is required");
         }
-        console.log(email);
         await validateOtp(email);
 
         await trackOtpRequest(email);
