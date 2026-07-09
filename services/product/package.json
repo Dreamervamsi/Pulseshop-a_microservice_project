@@ -1,0 +1,10 @@
+{
+    "name": "@pulseshop/product-service",
+    "scripts": {
+        "build": "tsc",
+        "dev": "npx tsx watch src/server.ts"
+    },
+    "dependencies": {
+        "@pulseshop/shared": "*"
+    }
+}
